@@ -1,0 +1,269 @@
+[
+  {
+    "url": "https://cdn.jsdelivr.net/gh/MagicalAstrogy/MagVarUpdate@0a730cd4a9b99689d1135a49b542c780b977c24c/artifact/bundle.js",
+    "path": "vendor/MagVarUpdate/0a730cd4/bundle.js",
+    "version": null,
+    "sha256": "85d90513ed82dd9ee8aadfdf569c7530620cb2d7f4424e49956e8bf7815b3b4f",
+    "upstreamSha256": "3b510787a95c7a51523dcbbb2beff5f13b3bd069abf973dec1fdb1f21eeea61f",
+    "bytes": 309074,
+    "imports": [
+      "vendor/npm/klona/2.0.6/bbebd2a5b26f.js",
+      "vendor/npm/_intlify_core-base/11.4.12/857ab6a12acd.js",
+      "vendor/npm/_intlify_shared/11.4.12/73fefb391a84.js",
+      "vendor/npm/compare-versions/6.1.1/83b186a3f907.js",
+      "vendor/npm/json5/2.2.3/4067dc802db6.js",
+      "vendor/npm/jsonrepair/3.15.0/3c7c77923670.js",
+      "vendor/npm/mathjs/15.2.0/736ffcf81743.js"
+    ],
+    "modification": "Japanese source build; card-owned relative imports; see source/MagVarUpdate/JAPANESE-CHANGES.md"
+  },
+  {
+    "url": "https://cdn.jsdelivr.net/gh/StageDog/tavern_resource@14e03abb53e56210b0351ef02873739c967c5406/dist/util/mvu_zod.js",
+    "path": "vendor/tavern_resource/14e03abb/mvu_zod.js",
+    "version": null,
+    "sha256": "e6296dff4a67ce0b8585df1aece748328f23481544f421f1b13aedbc0c15839e",
+    "upstreamSha256": "78c40f52d81022d9d769a923a49e673b8babb562656051a7d0410b6b19f45184",
+    "bytes": 4750,
+    "imports": [
+      "vendor/npm/compare-versions/6.1.1/79316a62dd5f.js",
+      "vendor/npm/json5/2.2.3/b0d644ab0704.js",
+      "vendor/npm/jsonrepair/3.15.0/0b90418a01d7.js",
+      "vendor/npm/zod/4.6.5/34b445af0a4e.js",
+      "vendor/npm/klona/2.0.6/1de46fb58e87.js"
+    ],
+    "modification": "Japanese source build; card-owned relative imports; see source/MagVarUpdate/JAPANESE-CHANGES.md"
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/klona/+esm",
+    "path": "vendor/npm/klona/2.0.6/bbebd2a5b26f.js",
+    "version": "2.0.6",
+    "sha256": "56d1d835d648f09fcbb1bbb9b4c9e363cacf9cd6e70d1b578da6c29ca6cc7582",
+    "upstreamSha256": "e6bb95d703905b5d1eed18561ba26568159f383f4b1f7a351de864c26ce8366b",
+    "bytes": 1153,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/@intlify/core-base/+esm",
+    "path": "vendor/npm/_intlify_core-base/11.4.12/857ab6a12acd.js",
+    "version": "11.4.12",
+    "sha256": "8884a79d2e00dc86cc14572b36b3a62a9e37855906b9bbe5c5c213a40162faa9",
+    "upstreamSha256": "55c8e4fb17deaa1390b1d67ba4ff3f069cdb38bb7db9f8d1be627a0a1199f38c",
+    "bytes": 19210,
+    "imports": [
+      "vendor/npm/_intlify_shared/11.4.12/297996712f6c.js",
+      "vendor/npm/_intlify_message-compiler/11.4.12/f7a84aaa900c.js",
+      "vendor/npm/_intlify_message-compiler/11.4.12/f7a84aaa900c.js"
+    ]
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/@intlify/shared/+esm",
+    "path": "vendor/npm/_intlify_shared/11.4.12/73fefb391a84.js",
+    "version": "11.4.12",
+    "sha256": "23a5cbb56938431502388c320dccdd30daa5378641fdd86c95cf89a93027c72a",
+    "upstreamSha256": "96d7a40d7aaff3ca2860b4977bdcdd6e95c35ec89aed10a439c5ce801466e9e3",
+    "bytes": 5162,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/compare-versions/+esm",
+    "path": "vendor/npm/compare-versions/6.1.1/83b186a3f907.js",
+    "version": "6.1.1",
+    "sha256": "9c562db00d33108ea99e755e29bc20d8e9f72bb18f6b0b5938f5eeedb52e260f",
+    "upstreamSha256": "72aca95e36fb70155e5f43546fe668c010fe82fd13e5a45d39427b26fed0a6f6",
+    "bytes": 2377,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/json5/+esm",
+    "path": "vendor/npm/json5/2.2.3/4067dc802db6.js",
+    "version": "2.2.3",
+    "sha256": "1f146fe23a4db0e8d6be2638d67b1d78492028e7c8c487504c01e0849fcfaa1e",
+    "upstreamSha256": "39805a3d9701b8ed20e892ccf86223f928382aa17edfc2361e6c5c76a473d3b2",
+    "bytes": 27327,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/jsonrepair/+esm",
+    "path": "vendor/npm/jsonrepair/3.15.0/3c7c77923670.js",
+    "version": "3.15.0",
+    "sha256": "c3d7c68491b85903a2a5fbfc846a7cff46a5a9435bf43a3e164e743517f8d269",
+    "upstreamSha256": "d74e6d2d78d2b12a8b32482657f5efa7691d09534551eb700a32ee741ffba362",
+    "bytes": 8231,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/mathjs/+esm",
+    "path": "vendor/npm/mathjs/15.2.0/736ffcf81743.js",
+    "version": "15.2.0",
+    "sha256": "48d4d5150f6c7f14b85efbcd341bf005571ead146cebc2e95c89a48de4f19731",
+    "upstreamSha256": "e4f96c41f285c679208828138f3d19a5a0bc364dac729078516029aa998c7dd7",
+    "bytes": 666488,
+    "imports": [
+      "vendor/npm/_babel_runtime/7.29.2/bf80c6b002df.js",
+      "vendor/npm/typed-function/4.2.2/b922ce65cd73.js",
+      "vendor/npm/decimal.js/10.6.0/4d80640c12ef.js",
+      "vendor/npm/complex.js/2.4.3/35f968ba5718.js",
+      "vendor/npm/fraction.js/5.3.4/2c735a2ad99f.js",
+      "vendor/npm/_babel_runtime/7.29.2/6f3c58f84969.js",
+      "vendor/npm/javascript-natural-sort/0.7.1/80e5a7b4c056.js",
+      "vendor/npm/escape-latex/1.2.0/11b53fec3cef.js",
+      "vendor/npm/seedrandom/3.0.5/aab5c8a1fb17.js",
+      "vendor/npm/tiny-emitter/2.1.0/e38d2d8ba494.js"
+    ]
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/compare-versions@6.1.1/+esm",
+    "path": "vendor/npm/compare-versions/6.1.1/79316a62dd5f.js",
+    "version": "6.1.1",
+    "sha256": "9c562db00d33108ea99e755e29bc20d8e9f72bb18f6b0b5938f5eeedb52e260f",
+    "upstreamSha256": "72aca95e36fb70155e5f43546fe668c010fe82fd13e5a45d39427b26fed0a6f6",
+    "bytes": 2377,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/json5@2.2.3/+esm",
+    "path": "vendor/npm/json5/2.2.3/b0d644ab0704.js",
+    "version": "2.2.3",
+    "sha256": "1f146fe23a4db0e8d6be2638d67b1d78492028e7c8c487504c01e0849fcfaa1e",
+    "upstreamSha256": "39805a3d9701b8ed20e892ccf86223f928382aa17edfc2361e6c5c76a473d3b2",
+    "bytes": 27327,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/jsonrepair@3.15.0/+esm",
+    "path": "vendor/npm/jsonrepair/3.15.0/0b90418a01d7.js",
+    "version": "3.15.0",
+    "sha256": "c3d7c68491b85903a2a5fbfc846a7cff46a5a9435bf43a3e164e743517f8d269",
+    "upstreamSha256": "d74e6d2d78d2b12a8b32482657f5efa7691d09534551eb700a32ee741ffba362",
+    "bytes": 8231,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/zod/v4/core/+esm",
+    "path": "vendor/npm/zod/4.6.5/34b445af0a4e.js",
+    "version": "4.6.5",
+    "sha256": "74c9136e377d14b6fbbfb0752f643f46d49a03978092cc6a73e5970a23bcb6ee",
+    "upstreamSha256": "1bd3b454a789837ccbb8c37700042e466d3cb12dfa7549bfcc93b10f021519b9",
+    "bytes": 409375,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/klona@2.0.6/+esm",
+    "path": "vendor/npm/klona/2.0.6/1de46fb58e87.js",
+    "version": "2.0.6",
+    "sha256": "56d1d835d648f09fcbb1bbb9b4c9e363cacf9cd6e70d1b578da6c29ca6cc7582",
+    "upstreamSha256": "e6bb95d703905b5d1eed18561ba26568159f383f4b1f7a351de864c26ce8366b",
+    "bytes": 1153,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/@intlify/shared@11.4.12/+esm",
+    "path": "vendor/npm/_intlify_shared/11.4.12/297996712f6c.js",
+    "version": "11.4.12",
+    "sha256": "23a5cbb56938431502388c320dccdd30daa5378641fdd86c95cf89a93027c72a",
+    "upstreamSha256": "96d7a40d7aaff3ca2860b4977bdcdd6e95c35ec89aed10a439c5ce801466e9e3",
+    "bytes": 5162,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/@intlify/message-compiler@11.4.12/+esm",
+    "path": "vendor/npm/_intlify_message-compiler/11.4.12/f7a84aaa900c.js",
+    "version": "11.4.12",
+    "sha256": "57455c8b7241a4aac8d19f7458b543c0718df96660ebd642380398edf8a6c969",
+    "upstreamSha256": "633060db9fb3a320f7f3346a92c7f7b286d7f205df42863168691520afc0e838",
+    "bytes": 18554,
+    "imports": [
+      "vendor/npm/_intlify_shared/11.4.12/297996712f6c.js"
+    ]
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/@babel/runtime@7.29.2/helpers/extends/+esm",
+    "path": "vendor/npm/_babel_runtime/7.29.2/bf80c6b002df.js",
+    "version": "7.29.2",
+    "sha256": "c80134051c863d91cc01952fb1a4fc8420260dc171165fd32ceba327d6febfb2",
+    "upstreamSha256": "ec0d3fce0e9fd17f25cea2126048308d34bc56cd8674f2d307cf2e59bb1cd303",
+    "bytes": 506,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/typed-function@4.2.2/+esm",
+    "path": "vendor/npm/typed-function/4.2.2/b922ce65cd73.js",
+    "version": "4.2.2",
+    "sha256": "b7056e04120fd5031434400ccb9d4c861aeb95ac0f5f50b83f3aacf22ee779a1",
+    "upstreamSha256": "905f3c6ff45d4afe2ac5fa070f154de730f43bace994219624e167eab4030498",
+    "bytes": 17682,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/decimal.js@10.6.0/+esm",
+    "path": "vendor/npm/decimal.js/10.6.0/4d80640c12ef.js",
+    "version": "10.6.0",
+    "sha256": "6b51c1c05bb3361472084b0ca4f096611a010a76ae2c78be6efbac4e848f1d55",
+    "upstreamSha256": "a969cf2e76c317b9daf06d5277bdbb0bda6a3c81003665ce50ae2a93dfbbdfaa",
+    "bytes": 32660,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/complex.js@2.4.3/+esm",
+    "path": "vendor/npm/complex.js/2.4.3/35f968ba5718.js",
+    "version": "2.4.3",
+    "sha256": "f4904f239d9220ed850ba8bd9b5e886d8774fdbefeadd1cb9b949a96c6dff78e",
+    "upstreamSha256": "b8ff2754901e80d9fed82fdbb2e880da45c8df96152f2ac1c976190f31a7b865",
+    "bytes": 9791,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/fraction.js@5.3.4/+esm",
+    "path": "vendor/npm/fraction.js/5.3.4/2c735a2ad99f.js",
+    "version": "5.3.4",
+    "sha256": "0f84383e891a4f026afaa4d949a86220aaf7bf56575848f9446e13d69383bff6",
+    "upstreamSha256": "8d8064193de7ee5c75b91a57f7afdecb3f14c2fd4d06f5381e865ef627dda9d8",
+    "bytes": 7092,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/@babel/runtime@7.29.2/helpers/defineProperty/+esm",
+    "path": "vendor/npm/_babel_runtime/7.29.2/6f3c58f84969.js",
+    "version": "7.29.2",
+    "sha256": "51656efb227c65472d42a18e0516fd320125c5ea3107c5153e442378dca4dd50",
+    "upstreamSha256": "e649731e0a92c66ba755fccfe9825af9209cbd06907e302a0d449433190f66b4",
+    "bytes": 982,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/javascript-natural-sort@0.7.1/+esm",
+    "path": "vendor/npm/javascript-natural-sort/0.7.1/80e5a7b4c056.js",
+    "version": "0.7.1",
+    "sha256": "d66f0f83cdcaec87e28a4410acc090a4b0804072f75c1e4002d55a5511e8a439",
+    "upstreamSha256": "8c35c7db497edbd016a087f02e65118f4c07e75ab1785561cf78de6446f6a3f9",
+    "bytes": 1301,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/escape-latex@1.2.0/+esm",
+    "path": "vendor/npm/escape-latex/1.2.0/11b53fec3cef.js",
+    "version": "1.2.0",
+    "sha256": "8b951af89eddcac0391bce9571df46b528f904ad1f0abe1768ebabe6b2303757",
+    "upstreamSha256": "2f53a679867f4ab8eae49b93671bd7ef11e39027808a8ad4b2fea783d3064eda",
+    "bytes": 1205,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/seedrandom@3.0.5/+esm",
+    "path": "vendor/npm/seedrandom/3.0.5/aab5c8a1fb17.js",
+    "version": "3.0.5",
+    "sha256": "31bccf44c7f82c2034e2144f3825c1b3837715fad6f4857b7be8ca4c11d34bda",
+    "upstreamSha256": "bff06d8dbe428efed7c3f061399890de74b6afddab70344e4b68a95055744d48",
+    "bytes": 8174,
+    "imports": []
+  },
+  {
+    "url": "https://testingcf.jsdelivr.net/npm/tiny-emitter@2.1.0/+esm",
+    "path": "vendor/npm/tiny-emitter/2.1.0/e38d2d8ba494.js",
+    "version": "2.1.0",
+    "sha256": "ace256cfcb60e0b1ea695431675ccce173bd11ccb3bdd0ae033045f248e5d8f0",
+    "upstreamSha256": "0a23e30943430ad037b6b144f01d6fcb6fb38c8eff8610dcfa1354e274f0c9ae",
+    "bytes": 1022,
+    "imports": []
+  }
+]
