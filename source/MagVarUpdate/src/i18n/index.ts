@@ -1,13 +1,13 @@
 import { japaneseMessages } from '@/i18n/messages/ja';
-import type { AppLocale, MessageModule } from '@/i18n/messages/types';
+import type { AppLocale } from '@/i18n/messages/types';
 import { createI18n, type LocaleMessageValue, useI18n } from 'vue-i18n';
 
 const allMessages = Object.fromEntries(Object.entries(japaneseMessages).map(([key,value]) => [key, { ja: value }]));
 
-export type MessageKey = keyof typeof allMessages;
+export type MessageKey = string;
 export type TranslationParams = Record<string, unknown>;
 
-export function resolveMvuLocale(locale: string): AppLocale {
+export function resolveMvuLocale(_locale: string): AppLocale {
     return 'ja'; // This card-specific runtime always presents Japanese UI.
 }
 
@@ -21,13 +21,10 @@ function getHostLocale(): string {
 
 type LocaleMessages = Record<string, LocaleMessageValue>;
 
-function buildLocaleMessages(locale: AppLocale): LocaleMessages {
+function buildLocaleMessages(locale: 'ja'): LocaleMessages {
     // 消息源使用便于类型检查的扁平键，这里再展开成 vue-i18n 所需的嵌套对象。
     const result: LocaleMessages = {};
-    for (const [key, translations] of Object.entries(allMessages) as [
-        MessageKey,
-        MessageModule[string],
-    ][]) {
+    for (const [key, translations] of Object.entries(allMessages)) {
         const path = key.split('.');
         const leaf = path.pop()!;
         let parent = result;

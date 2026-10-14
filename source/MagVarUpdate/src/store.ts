@@ -1,3 +1,4 @@
+import { decodeMvuSettings, encodeMvuSettings } from '@/settings_compat';
 import { migrateExtraModelApiProfiles } from '@/function/update/extra_model_api_profiles';
 import {
     CharacterSettingsOverride,
@@ -303,17 +304,17 @@ const Runtimes = z
     .prefault({});
 
 export const useDataStore = defineStore('MVU变量框架', () => {
-    const settings = ref(Settings.parse(_.get(SillyTavern.extensionSettings, 'mvu_settings', {})));
+    const settings = ref(Settings.parse(decodeMvuSettings(_.get(SillyTavern.extensionSettings, 'mvu_settings', {}))));
     watch(
         settings,
         new_settings => {
-            _.set(SillyTavern.extensionSettings, 'mvu_settings', toRaw(new_settings));
+            _.set(SillyTavern.extensionSettings, 'mvu_settings', encodeMvuSettings(toRaw(new_settings), _.get(SillyTavern.extensionSettings, 'mvu_settings', {})));
             if (!is_jest_environment) SillyTavern.saveSettingsDebounced();
         },
         { deep: true }
     );
     const _reload_settings = () => {
-        settings.value = Settings.parse(_.get(SillyTavern.extensionSettings, 'mvu_settings', {}));
+        settings.value = Settings.parse(decodeMvuSettings(_.get(SillyTavern.extensionSettings, 'mvu_settings', {})));
     };
 
     const character_settings = ref<CharacterSettingsState>(createCharacterSettingsState());
