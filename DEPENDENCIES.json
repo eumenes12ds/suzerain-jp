@@ -3,9 +3,9 @@
     "url": "https://cdn.jsdelivr.net/gh/MagicalAstrogy/MagVarUpdate@0a730cd4a9b99689d1135a49b542c780b977c24c/artifact/bundle.js",
     "path": "vendor/MagVarUpdate/0a730cd4/bundle.js",
     "version": null,
-    "sha256": "85d90513ed82dd9ee8aadfdf569c7530620cb2d7f4424e49956e8bf7815b3b4f",
+    "sha256": "efc4e1a17ae458cbbad5179e4c69252fc21bee73be8ffc276a4f800d684c7279",
     "upstreamSha256": "3b510787a95c7a51523dcbbb2beff5f13b3bd069abf973dec1fdb1f21eeea61f",
-    "bytes": 309074,
+    "bytes": 314162,
     "imports": [
       "vendor/npm/klona/2.0.6/bbebd2a5b26f.js",
       "vendor/npm/_intlify_core-base/11.4.12/857ab6a12acd.js",
@@ -15,7 +15,7 @@
       "vendor/npm/jsonrepair/3.15.0/3c7c77923670.js",
       "vendor/npm/mathjs/15.2.0/736ffcf81743.js"
     ],
-    "modification": "Japanese source build; card-owned relative imports; see source/MagVarUpdate/JAPANESE-CHANGES.md"
+    "modification": "Japanese source build with bidirectional legacy account-settings compatibility; repository-local imports; see source/MagVarUpdate/JAPANESE-CHANGES.md"
   },
   {
     "url": "https://cdn.jsdelivr.net/gh/StageDog/tavern_resource@14e03abb53e56210b0351ef02873739c967c5406/dist/util/mvu_zod.js",
