@@ -1,3 +1,4 @@
+import { normalizeMvuButtons } from '@/settings_contract';
 import { createEmptyGameData, loadInitVarData } from '@/function/initvar/variable_init';
 import { isExtraModelSupported } from '@/function/is_extra_model_supported';
 import { isFunctionCallingSupported } from '@/function/is_function_calling_supported';
@@ -242,7 +243,7 @@ export const buttons: Button[] = [
             // @ts-expect-error 该函数可用
             await setChatMessage({}, message_id);
 
-            if (useDataStore().effective_settings.兼容性.更新到聊天变量) {
+            if (useDataStore().effective_settings.互換性.チャット変数に更新) {
                 await replaceVariables(merged_data, { type: 'chat' });
             }
 
@@ -431,11 +432,11 @@ export const buttons: Button[] = [
         },
     },
     {
-        name: '追加モデルの解析を再試行',
+        name: "追加モデル解析を再試行",
         label_key: 'panel.button.retryExtraModelParsing',
         function: async () => {
             const store = useDataStore();
-            if (store.effective_settings.更新方式 === '随AI输出') {
+            if (store.effective_settings.更新方式 === "主AI追従出力") {
                 toastr.info(
                     tr('runtime.button.extraModelNotEnabled'),
                     tr('runtime.button.extraModelRetryTitle'),
@@ -445,7 +446,7 @@ export const buttons: Button[] = [
                 );
                 return;
             } else if (
-                store.settings.额外模型解析配置.应答格式 === '工具调用' &&
+                store.settings.追加モデル解析設定.応答フォーマット === "ツール呼び出し" &&
                 !isFunctionCallingSupported()
             ) {
                 toastr.info(
@@ -530,7 +531,7 @@ export const buttons: Button[] = [
         label_key: 'panel.button.clearOldFloorVariables',
         is_legacy: true,
         function: async () => {
-            const snapshot_interval = useDataStore().settings.自动清理变量.快照保留间隔;
+            const snapshot_interval = useDataStore().settings.自動クリーンアップ変数.スナップショット保持間隔;
             const result = (await SillyTavern.callGenericPopup(
                 tr('runtime.button.cleanupPrompt', { interval: snapshot_interval }),
                 SillyTavern.POPUP_TYPE.INPUT,
@@ -588,6 +589,7 @@ export const buttons: Button[] = [
 let prev_states: ScriptButton[] = [];
 
 export function initButtons() {
+    replaceScriptButtons(normalizeMvuButtons(getScriptButtons()));
     appendInexistentScriptButtons(buttons.map(button => ({ name: button.name, visible: false })));
     const stop_events = buttons.map(button =>
         controlledStoppableEventOn(getButtonEvent(button.name), button.function)

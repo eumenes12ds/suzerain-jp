@@ -28,7 +28,7 @@ const store = useDataStore();
 const { t } = useMvuI18n();
 const visible_buttons = computed(() =>
     buttons.filter(
-        button => !(button.is_legacy ?? false) || store.settings.兼容性.显示老旧功能 === true
+        button => !(button.is_legacy ?? false) || store.settings.互換性.旧機能を表示 === true
     )
 );
 </script>

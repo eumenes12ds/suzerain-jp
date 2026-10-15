@@ -2,7 +2,7 @@ import { useDataStore } from '@/store';
 
 export function checkAndRemoveChatVariables() {
     const store = useDataStore();
-    if (store.effective_settings.兼容性.更新到聊天变量 === false) {
+    if (store.effective_settings.互換性.チャット変数に更新 === false) {
         updateVariablesWith(
             variables => {
                 _.unset(variables, 'initialized_lorebooks');

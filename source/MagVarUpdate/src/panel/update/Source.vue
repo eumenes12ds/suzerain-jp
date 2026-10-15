@@ -1,11 +1,11 @@
 <template>
     <Detail :title="t('panel.source.section')">
         <Select
-            v-model="store.settings.额外模型解析配置.模型来源"
+            v-model="store.settings.追加モデル解析設定.モデル出典"
             :options="model_source_options"
         />
 
-        <template v-if="store.settings.额外模型解析配置.模型来源 === '自定义'">
+        <template v-if="store.settings.追加モデル解析設定.モデル出典 === 'カスタム'">
             <Detail :title="t('panel.source.profile.section')">
                 <Field :label="t('panel.source.profile.current')">
                     <div class="mvu-api-profile-controls">
@@ -16,11 +16,11 @@
                         >
                             <option value="">{{ t('panel.source.profile.manual') }}</option>
                             <option
-                                v-for="profile in store.settings.额外模型解析配置.api方案列表"
-                                :key="profile.名称"
-                                :value="profile.名称"
+                                v-for="profile in store.settings.追加モデル解析設定.apiプロファイル一覧"
+                                :key="profile.名前"
+                                :value="profile.名前"
                             >
-                                {{ profile.名称 }}
+                                {{ profile.名前 }}
                             </option>
                         </select>
 
@@ -59,7 +59,7 @@
             <div class="mvu-field-grid">
                 <Field :label="t('panel.source.apiAddress')">
                     <input
-                        v-model="store.settings.额外模型解析配置.api地址"
+                        v-model="store.settings.追加モデル解析設定.apiアドレス"
                         type="text"
                         class="text_pole"
                         placeholder="http://localhost:1234/v1"
@@ -68,7 +68,7 @@
 
                 <Field :label="t('panel.source.apiKey')">
                     <input
-                        v-model="store.settings.额外模型解析配置.密钥"
+                        v-model="store.settings.追加モデル解析設定.APIキー"
                         type="password"
                         class="text_pole"
                         :placeholder="t('panel.source.apiKeyPlaceholder')"
@@ -88,7 +88,7 @@
                 <div class="mvu-field-grid">
                     <Field :label="t('panel.source.maxTokens')">
                         <input
-                            v-model.number="store.settings.额外模型解析配置.最大回复token数"
+                            v-model.number="store.settings.追加モデル解析設定.最大応答トークン数"
                             :disabled="!additional_extra_configuration_supported"
                             type="number"
                             class="text_pole"
@@ -100,7 +100,7 @@
 
                     <Field :label="t('panel.source.chatHistory')">
                         <RangeNumber
-                            v-model="store.settings.额外模型解析配置.max_chat_history"
+                            v-model="store.settings.追加モデル解析設定.max_chat_history"
                             :disabled="!additional_extra_configuration_supported"
                             :min="2"
                             :max="100"
@@ -110,7 +110,7 @@
 
                     <Field :label="t('panel.source.temperature')">
                         <RangeNumber
-                            v-model="store.settings.额外模型解析配置.温度"
+                            v-model="store.settings.追加モデル解析設定.温度"
                             :disabled="!additional_extra_configuration_supported"
                             :min="0"
                             :max="2"
@@ -120,7 +120,7 @@
 
                     <Field :label="t('panel.source.frequencyPenalty')">
                         <RangeNumber
-                            v-model="store.settings.额外模型解析配置.频率惩罚"
+                            v-model="store.settings.追加モデル解析設定.頻度ペナルティ"
                             :disabled="!additional_extra_configuration_supported"
                             :min="-2"
                             :max="2"
@@ -130,7 +130,7 @@
 
                     <Field :label="t('panel.source.presencePenalty')">
                         <RangeNumber
-                            v-model="store.settings.额外模型解析配置.存在惩罚"
+                            v-model="store.settings.追加モデル解析設定.存在ペナルティ"
                             :disabled="!additional_extra_configuration_supported"
                             :min="-2"
                             :max="2"
@@ -140,7 +140,7 @@
 
                     <Field :label="t('panel.source.topP')">
                         <RangeNumber
-                            v-model="store.settings.额外模型解析配置.top_p"
+                            v-model="store.settings.追加モデル解析設定.top_p"
                             :disabled="!additional_extra_configuration_supported"
                             :min="0"
                             :max="1"
@@ -150,7 +150,7 @@
 
                     <Field :label="t('panel.source.topK')">
                         <RangeNumber
-                            v-model="store.settings.额外模型解析配置.top_k"
+                            v-model="store.settings.追加モデル解析設定.top_k"
                             :disabled="!additional_extra_configuration_supported"
                             :min="0"
                             :max="500"
@@ -191,11 +191,12 @@ const additional_extra_configuration_supported = compare(
     '>='
 );
 const model_source_options = computed(() => [
-    { value: '与插头相同', label: t('panel.source.sameAsConnection') },
-    { value: '自定义', label: t('panel.source.custom') },
+    ...(store.settings.追加モデル解析設定.モデル出典 === "その他" ? [{ value:"その他", label:"その他（このカードでは未対応・設定を保持）", disabled:true }] : []),
+    { value: "プラグと同じ", label: t('panel.source.sameAsConnection') },
+    { value: "カスタム", label: t('panel.source.custom') },
 ]);
 
-const selectedProfileName = ref(store.settings.额外模型解析配置.当前api方案);
+const selectedProfileName = ref(store.settings.追加モデル解析設定.現在のapiプロファイル);
 const newProfileName = ref('');
 const isApplyingProfile = ref(false);
 const isRevertingProfileSelection = ref(false);
@@ -205,11 +206,11 @@ const isRevertingProfileSelection = ref(false);
 const canDeleteCurrentProfile = computed(
     () =>
         selectedProfileName.value.trim().length > 0 &&
-        store.settings.额外模型解析配置.api方案列表.length >= 2
+        store.settings.追加モデル解析設定.apiプロファイル一覧.length >= 2
 );
 
 watch(
-    () => store.settings.额外模型解析配置.当前api方案,
+    () => store.settings.追加モデル解析設定.現在のapiプロファイル,
     value => {
         if (!isApplyingProfile.value) {
             selectedProfileName.value = value;
@@ -227,7 +228,7 @@ watch(selectedProfileName, async (value, old_value) => {
         return;
     }
 
-    if (isActiveExtraModelApiProfileDirty(store.settings.额外模型解析配置)) {
+    if (isActiveExtraModelApiProfileDirty(store.settings.追加モデル解析設定)) {
         const result = await SillyTavern.callGenericPopup(
             t('panel.source.switchDirty'),
             SillyTavern.POPUP_TYPE.CONFIRM,
@@ -249,26 +250,26 @@ watch(selectedProfileName, async (value, old_value) => {
 
     if (!value) {
         isApplyingProfile.value = true;
-        const next_config = clearUnboundExtraModelApiProfileFields(store.settings.额外模型解析配置);
-        store.settings.额外模型解析配置.当前api方案 = next_config.当前api方案;
-        store.settings.额外模型解析配置.api地址 = next_config.api地址;
-        store.settings.额外模型解析配置.密钥 = next_config.密钥;
-        store.settings.额外模型解析配置.模型名称 = next_config.模型名称;
+        const next_config = clearUnboundExtraModelApiProfileFields(store.settings.追加モデル解析設定);
+        store.settings.追加モデル解析設定.現在のapiプロファイル = next_config.現在のapiプロファイル;
+        store.settings.追加モデル解析設定.apiアドレス = next_config.apiアドレス;
+        store.settings.追加モデル解析設定.APIキー = next_config.APIキー;
+        store.settings.追加モデル解析設定.モデル名 = next_config.モデル名;
         isApplyingProfile.value = false;
         return;
     }
 
     try {
         isApplyingProfile.value = true;
-        const next_config = selectExtraModelApiProfile(store.settings.额外模型解析配置, value);
-        store.settings.额外模型解析配置.api地址 = next_config.api地址;
-        store.settings.额外模型解析配置.密钥 = next_config.密钥;
-        store.settings.额外模型解析配置.模型名称 = next_config.模型名称;
-        store.settings.额外模型解析配置.当前api方案 = next_config.当前api方案;
+        const next_config = selectExtraModelApiProfile(store.settings.追加モデル解析設定, value);
+        store.settings.追加モデル解析設定.apiアドレス = next_config.apiアドレス;
+        store.settings.追加モデル解析設定.APIキー = next_config.APIキー;
+        store.settings.追加モデル解析設定.モデル名 = next_config.モデル名;
+        store.settings.追加モデル解析設定.現在のapiプロファイル = next_config.現在のapiプロファイル;
     } catch (error) {
         toastr.error(format_error(error), t('panel.source.switchFailureTitle'));
         isRevertingProfileSelection.value = true;
-        selectedProfileName.value = store.settings.额外模型解析配置.当前api方案;
+        selectedProfileName.value = store.settings.追加モデル解析設定.現在のapiプロファイル;
     } finally {
         isApplyingProfile.value = false;
     }
@@ -277,14 +278,14 @@ watch(selectedProfileName, async (value, old_value) => {
 function saveCurrentProfile() {
     try {
         const saved = saveCurrentExtraModelApiProfile(
-            store.settings.额外模型解析配置,
+            store.settings.追加モデル解析設定,
             selectedProfileName.value || newProfileName.value
         );
-        store.settings.额外模型解析配置.api方案列表 = saved.api方案列表;
-        store.settings.额外模型解析配置.当前api方案 = saved.当前api方案;
-        selectedProfileName.value = saved.当前api方案;
+        store.settings.追加モデル解析設定.apiプロファイル一覧 = saved.apiプロファイル一覧;
+        store.settings.追加モデル解析設定.現在のapiプロファイル = saved.現在のapiプロファイル;
+        selectedProfileName.value = saved.現在のapiプロファイル;
         toastr.success(
-            t('panel.source.profileSaved', { name: _.escape(saved.当前api方案) }),
+            t('panel.source.profileSaved', { name: _.escape(saved.現在のapiプロファイル) }),
             t('runtime.common.mvuTitle')
         );
     } catch (error) {
@@ -300,13 +301,13 @@ function saveAsNewProfile() {
     }
 
     try {
-        const saved = saveAsNewExtraModelApiProfile(store.settings.额外模型解析配置, profile_name);
-        store.settings.额外模型解析配置.api方案列表 = saved.api方案列表;
-        store.settings.额外模型解析配置.当前api方案 = saved.当前api方案;
-        selectedProfileName.value = saved.当前api方案;
+        const saved = saveAsNewExtraModelApiProfile(store.settings.追加モデル解析設定, profile_name);
+        store.settings.追加モデル解析設定.apiプロファイル一覧 = saved.apiプロファイル一覧;
+        store.settings.追加モデル解析設定.現在のapiプロファイル = saved.現在のapiプロファイル;
+        selectedProfileName.value = saved.現在のapiプロファイル;
         newProfileName.value = '';
         toastr.success(
-            t('panel.source.profileSavedAs', { name: _.escape(saved.当前api方案) }),
+            t('panel.source.profileSavedAs', { name: _.escape(saved.現在のapiプロファイル) }),
             t('runtime.common.mvuTitle')
         );
     } catch (error) {
@@ -320,14 +321,14 @@ async function deleteCurrentProfile() {
         return;
     }
     // 与 canDeleteCurrentProfile 同一产品规则，见上方注释
-    if (store.settings.额外模型解析配置.api方案列表.length < 2) {
+    if (store.settings.追加モデル解析設定.apiプロファイル一覧.length < 2) {
         toastr.warning(t('panel.source.keepTwoProfiles'), t('runtime.common.mvuTitle'));
         return;
     }
 
     try {
         const next_config = await deleteActiveExtraModelApiProfileWithConfirmation(
-            store.settings.额外模型解析配置,
+            store.settings.追加モデル解析設定,
             profile_name,
             async confirmation => {
                 const is_discard_confirmation = confirmation === 'discard_unsaved_changes';
@@ -356,12 +357,12 @@ async function deleteCurrentProfile() {
             return;
         }
 
-        store.settings.额外模型解析配置.api方案列表 = next_config.api方案列表;
-        store.settings.额外模型解析配置.当前api方案 = next_config.当前api方案;
-        store.settings.额外模型解析配置.api地址 = next_config.api地址;
-        store.settings.额外模型解析配置.密钥 = next_config.密钥;
-        store.settings.额外模型解析配置.模型名称 = next_config.模型名称;
-        selectedProfileName.value = next_config.当前api方案;
+        store.settings.追加モデル解析設定.apiプロファイル一覧 = next_config.apiプロファイル一覧;
+        store.settings.追加モデル解析設定.現在のapiプロファイル = next_config.現在のapiプロファイル;
+        store.settings.追加モデル解析設定.apiアドレス = next_config.apiアドレス;
+        store.settings.追加モデル解析設定.APIキー = next_config.APIキー;
+        store.settings.追加モデル解析設定.モデル名 = next_config.モデル名;
+        selectedProfileName.value = next_config.現在のapiプロファイル;
         toastr.info(
             t('panel.source.profileDeleted', { name: _.escape(profile_name) }),
             t('runtime.common.mvuTitle')

@@ -9,9 +9,9 @@ export async function restoreVariables() {
     const last_message_id = SillyTavern.chat.length - 1;
 
     const store = useDataStore();
-    const { 触发恢复变量的最近楼层数 } = store.settings.自动清理变量;
+    const { 復元をトリガーする変数の最近階層スタック数 } = store.settings.自動クリーンアップ変数;
 
-    const last_10th_message_id = Math.max(1, last_message_id - 触发恢复变量的最近楼层数);
+    const last_10th_message_id = Math.max(1, last_message_id - 復元をトリガーする変数の最近階層スタック数);
     const last_not_has_variable_message_id = SillyTavern.chat.findLastIndex(
         chat_message =>
             !_.has(chat_message, ['variables', chat_message.swipe_id ?? 0, 'stat_data']) ||
@@ -21,7 +21,7 @@ export async function restoreVariables() {
         // 最近 10 楼都还有楼层变量
         console.info(
             tr('runtime.cleanup.restoreNotNeededLog', {
-                count: 触发恢复变量的最近楼层数,
+                count: 復元をトリガーする変数の最近階層スタック数,
             })
         );
         return;
@@ -29,7 +29,7 @@ export async function restoreVariables() {
 
     const last_20th_message_id = Math.max(
         1,
-        last_message_id - store.settings.自动清理变量.要保留变量的最近楼层数
+        last_message_id - store.settings.自動クリーンアップ変数.保持する変数の最近階層スタック数
     );
     const snapshot_message_id = getLastValidMessageId(last_20th_message_id);
     if (snapshot_message_id === -1) {

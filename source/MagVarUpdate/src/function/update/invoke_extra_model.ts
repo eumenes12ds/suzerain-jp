@@ -27,7 +27,7 @@ import YAML from 'yaml';
 //测试用，为了使首次请求必失败
 let debug_extra_request_counter = 0;
 
-const V4_COMPATIBLE_FORMATTED_OUTPUT = '格式化输出(v4兼容)';
+const V4_COMPATIBLE_FORMATTED_OUTPUT = "フォーマット出力(v4互換)";
 const MIN_CUSTOM_API_BODY_TAVERN_HELPER_VERSION = '4.8.13';
 const JSON_OBJECT_CUSTOM_INCLUDE_BODY = Object.freeze({
     response_format: {
@@ -45,7 +45,7 @@ function generateRandomHeader(): string {
 }
 
 function isV4CompatibleFormattedOutput(): boolean {
-    return useDataStore().settings.额外模型解析配置.应答格式 === V4_COMPATIBLE_FORMATTED_OUTPUT;
+    return useDataStore().settings.追加モデル解析設定.応答フォーマット === V4_COMPATIBLE_FORMATTED_OUTPUT;
 }
 
 function supportsCustomApiBody(): boolean {
@@ -56,8 +56,8 @@ function supportsCustomApiBody(): boolean {
 function assertV4CompatibleFormattedOutputUsable() {
     const store = useDataStore();
     if (
-        store.settings.额外模型解析配置.应答格式 === V4_COMPATIBLE_FORMATTED_OUTPUT &&
-        store.settings.额外模型解析配置.模型来源 === '与插头相同'
+        store.settings.追加モデル解析設定.応答フォーマット === V4_COMPATIBLE_FORMATTED_OUTPUT &&
+        store.settings.追加モデル解析設定.モデル出典 === "プラグと同じ"
     ) {
         throw new Error(tr('runtime.extraModel.v4RequiresCustomSource'));
     }
@@ -87,7 +87,7 @@ function buildJsonObjectCustomIncludeBody(original_body: unknown): Record<string
     return {
         ...parseCustomIncludeBody(original_body),
         ...JSON_OBJECT_CUSTOM_INCLUDE_BODY,
-        ...(store.settings.额外模型解析配置.关闭thinking
+        ...(store.settings.追加モデル解析設定.thinking無効
             ? DISABLED_THINKING_CUSTOM_INCLUDE_BODY
             : {}),
     };
@@ -257,16 +257,16 @@ export async function invokeExtraModelWithStrategy(): Promise<string | null> {
             return null;
         };
 
-        switch (store.settings.额外模型解析配置.请求方式) {
-            case '依次请求，失败后重试':
-                for (let i = 0; i < store.settings.额外模型解析配置.请求次数; i++) {
-                    if (store.settings.通知.额外模型解析中) {
+        switch (store.settings.追加モデル解析設定.リクエスト方式) {
+            case "順番にリクエストし、失敗したら再試行":
+                for (let i = 0; i < store.settings.追加モデル解析設定.リクエスト回数; i++) {
+                    if (store.settings.通知.追加モデル解析中) {
                         toastr.info(
                             i === 0
                                 ? tr('runtime.extraModel.requesting')
                                 : tr('runtime.extraModel.retrying', {
                                       attempt: i,
-                                      total: store.settings.额外模型解析配置.请求次数 - 1,
+                                      total: store.settings.追加モデル解析設定.リクエスト回数 - 1,
                                   }),
                             tr('runtime.extraModel.updateInProgressTitle')
                         );
@@ -281,18 +281,18 @@ export async function invokeExtraModelWithStrategy(): Promise<string | null> {
                     }
                 }
                 return null;
-            case '同时请求多次':
-                if (store.settings.通知.额外模型解析中) {
+            case "同時に複数回リクエスト":
+                if (store.settings.通知.追加モデル解析中) {
                     toastr.info(
                         tr('runtime.extraModel.concurrentRequests', {
-                            count: store.settings.额外模型解析配置.请求次数,
+                            count: store.settings.追加モデル解析設定.リクエスト回数,
                         }),
                         tr('runtime.extraModel.updateInProgressTitle')
                     );
                 }
-                return concurrentInvoke(store.settings.额外模型解析配置.请求次数);
-            case '先请求一次, 失败后再同时请求多次':
-                if (store.settings.通知.额外模型解析中) {
+                return concurrentInvoke(store.settings.追加モデル解析設定.リクエスト回数);
+            case "最初に1回リクエストし、失敗したら同時に複数回リクエスト":
+                if (store.settings.通知.追加モデル解析中) {
                     toastr.info(
                         tr('runtime.extraModel.firstRequest'),
                         tr('runtime.extraModel.updateInProgressTitle')
@@ -308,15 +308,15 @@ export async function invokeExtraModelWithStrategy(): Promise<string | null> {
                         return null;
                     }
                 }
-                if (store.settings.通知.额外模型解析中) {
+                if (store.settings.通知.追加モデル解析中) {
                     toastr.info(
                         tr('runtime.extraModel.firstRequestFailed', {
-                            count: store.settings.额外模型解析配置.请求次数 - 1,
+                            count: store.settings.追加モデル解析設定.リクエスト回数 - 1,
                         }),
                         tr('runtime.extraModel.updateInProgressTitle')
                     );
                 }
-                return concurrentInvoke(store.settings.额外模型解析配置.请求次数 - 1);
+                return concurrentInvoke(store.settings.追加モデル解析設定.リクエスト回数 - 1);
             default:
                 return null;
         }
@@ -416,7 +416,7 @@ function normalizeGenerateResultByResponseFormat(
     result: string | GenerateToolCallResult,
     response_format: string
 ): string {
-    if (response_format === '格式化输出' || response_format === V4_COMPATIBLE_FORMATTED_OUTPUT) {
+    if (response_format === "フォーマット出力" || response_format === V4_COMPATIBLE_FORMATTED_OUTPUT) {
         const formatted = extractFromFormattedOutput(result);
         if (formatted) {
             return formatted;
@@ -427,32 +427,33 @@ function normalizeGenerateResultByResponseFormat(
 
 async function requestReply(generation_id?: string, batch_id?: string): Promise<string> {
     const store = useDataStore();
-    const response_format = store.settings.额外模型解析配置.应答格式;
+    if (store.settings.追加モデル解析設定.モデル出典 === "その他") throw new Error("このカードのMVUは「その他」の接続方式に対応していません。設定は保持されています。「プラグと同じ」または「カスタム」を選択してください。");
+    const response_format = store.settings.追加モデル解析設定.応答フォーマット;
     const is_v4_compatible_formatted_output = response_format === V4_COMPATIBLE_FORMATTED_OUTPUT;
 
     assertV4CompatibleFormattedOutputUsable();
 
     const config: GenerateRawConfig = {
         user_input: '遵循<must>指令',
-        max_chat_history: store.settings.额外模型解析配置.max_chat_history,
-        should_stream: store.settings.额外模型解析配置.兼容假流式,
+        max_chat_history: store.settings.追加モデル解析設定.max_chat_history,
+        should_stream: store.settings.追加モデル解析設定.疑似ストリーミング互換,
         generation_id,
     };
-    if (store.settings.额外模型解析配置.模型来源 === '自定义') {
+    if (store.settings.追加モデル解析設定.モデル出典 === "カスタム") {
         const unset_if_equal = (value: number, expected: number) =>
             compare(store.versions.tavernhelper, '4.3.9', '>=') && value === expected
                 ? 'unset'
                 : value;
         config.custom_api = {
-            apiurl: normalizeBaseURL(store.settings.额外模型解析配置.api地址),
-            key: store.settings.额外模型解析配置.密钥,
-            model: store.settings.额外模型解析配置.模型名称,
-            max_tokens: store.settings.额外模型解析配置.最大回复token数,
-            temperature: unset_if_equal(store.settings.额外模型解析配置.温度, 1),
-            frequency_penalty: unset_if_equal(store.settings.额外模型解析配置.频率惩罚, 0),
-            presence_penalty: unset_if_equal(store.settings.额外模型解析配置.存在惩罚, 0),
-            top_p: unset_if_equal(store.settings.额外模型解析配置.top_p, 1),
-            top_k: unset_if_equal(store.settings.额外模型解析配置.top_k, 0),
+            apiurl: normalizeBaseURL(store.settings.追加モデル解析設定.apiアドレス),
+            key: store.settings.追加モデル解析設定.APIキー,
+            model: store.settings.追加モデル解析設定.モデル名,
+            max_tokens: store.settings.追加モデル解析設定.最大応答トークン数,
+            temperature: unset_if_equal(store.settings.追加モデル解析設定.温度, 1),
+            frequency_penalty: unset_if_equal(store.settings.追加モデル解析設定.頻度ペナルティ, 0),
+            presence_penalty: unset_if_equal(store.settings.追加モデル解析設定.存在ペナルティ, 0),
+            top_p: unset_if_equal(store.settings.追加モデル解析設定.top_p, 1),
+            top_k: unset_if_equal(store.settings.追加モデル解析設定.top_k, 0),
         };
         if (is_v4_compatible_formatted_output) {
             config.custom_api.source = 'custom';
@@ -469,12 +470,12 @@ async function requestReply(generation_id?: string, batch_id?: string): Promise<
     }
 
     let task = decoded_extra_model_task;
-    if (response_format === '工具调用') {
+    if (response_format === "ツール呼び出し") {
         task += `\n use \`${MVU_TOOL_DEFINITION.function.name}\` tool to update variables.`;
         store.runtimes.is_function_call_enabled = true;
         config.tools = [MVU_TOOL_DEFINITION];
         config.tool_choice = 'required';
-    } else if (response_format === '格式化输出') {
+    } else if (response_format === "フォーマット出力") {
         task +=
             '\n You are in formatted-output mode. Do not output <UpdateVariable> tags, markdown, or prose. Return only a JSON object matching the provided json_schema: {"analysis":"...","json_patch":[...]}. Put MVU JsonPatch dialect operations in `json_patch`.';
         config.json_schema = MVU_JSON_PATCH_RESPONSE_SCHEMA;
@@ -489,12 +490,12 @@ async function requestReply(generation_id?: string, batch_id?: string): Promise<
     SillyTavern.registerMacro('lastUserMessage', () => {
         return task;
     });
-    if (store.runtimes.debug.首次额外请求必失败 && debug_extra_request_counter === 0) {
+    if (store.runtimes.debug.最初の追加リクエストを必ず失敗させる && debug_extra_request_counter === 0) {
         debug_extra_request_counter++;
         throw 'simulated exception';
     }
 
-    if (store.settings.额外模型解析配置.破限方案 === '使用当前预设') {
+    if (store.settings.追加モデル解析設定.脱獄方案 === "現在のプリセットを使用") {
         clearExtraModelRequestOverrides();
         const result = await generate({
             ...config,
@@ -525,14 +526,14 @@ async function requestReply(generation_id?: string, batch_id?: string): Promise<
         return normalizeGenerateResultByResponseFormat(result, response_format);
     }
 
-    if (store.settings.额外模型解析配置.破限方案 === '使用其他预设') {
-        const preset = getExtraModelPreset(store.settings.额外模型解析配置.其他预设名称);
+    if (store.settings.追加モデル解析設定.脱獄方案 === "その他のプリセットを使用") {
+        const preset = getExtraModelPreset(store.settings.追加モデル解析設定.その他プリセット名);
         const { ordered_prompts, injects, request_overrides } = buildOtherPresetGenerateConfig(
             preset,
             task
         );
 
-        if (store.settings.额外模型解析配置.模型来源 === '与插头相同') {
+        if (store.settings.追加モデル解析設定.モデル出典 === "プラグと同じ") {
             setExtraModelRequestOverrides(request_overrides);
         } else {
             clearExtraModelRequestOverrides();
@@ -550,12 +551,12 @@ async function requestReply(generation_id?: string, batch_id?: string): Promise<
 
     clearExtraModelRequestOverrides();
     const model_name =
-        store.settings.额外模型解析配置.模型来源 === '与插头相同'
+        store.settings.追加モデル解析設定.モデル出典 === "プラグと同じ"
             ? SillyTavern.getChatCompletionModel()
-            : store.settings.额外模型解析配置.模型名称;
+            : store.settings.追加モデル解析設定.モデル名;
     const is_gemini = model_name.toLowerCase().includes('gemini');
     const rnd_header_prompts =
-        store.settings.额外模型解析配置.随机头部 && is_gemini
+        store.settings.追加モデル解析設定.ランダムヘッダー && is_gemini
             ? [{ role: 'system' as const, content: batch_id ?? generateRandomHeader() }]
             : [];
 

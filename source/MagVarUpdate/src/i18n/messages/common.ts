@@ -2,7 +2,7 @@ import { defineMessages } from '@/i18n/messages/types';
 
 export const commonMessages = defineMessages({
     'common.enabled': {
-        'zh-CN': '启用',
+        'zh-CN': "有効",
         en: 'Enabled',
     },
     'common.disabled': {

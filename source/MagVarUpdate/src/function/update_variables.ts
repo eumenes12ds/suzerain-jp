@@ -1482,7 +1482,7 @@ export async function updateVariables(
         variables,
         variables_before_update
     );
-    if (error_info && useDataStore().settings.通知.变量更新出错) {
+    if (error_info && useDataStore().settings.通知.変数更新エラー) {
         toastr.warning(
             tr('runtime.variableUpdate.errorDetail', {
                 detail: _.escape(error_info.content),
@@ -1545,7 +1545,7 @@ export async function handleVariablesInMessage(message_id: number) {
         }
         return data;
     };
-    if (has_variable_modified && settings.兼容性.更新到聊天变量) {
+    if (has_variable_modified && settings.互換性.チャット変数に更新) {
         await updateVariablesWith(updater, { type: 'chat' });
     }
     await updateVariablesWith(updater, { type: 'message', message_id: message_id });

@@ -4,7 +4,7 @@
     <template
         v-if="
             store.runtimes.unsupported_warnings !== '' &&
-            store.effective_settings.更新方式 === '额外模型解析'
+            store.effective_settings.更新方式 === '追加モデル解析'
         "
     >
         <div class="mvu-warning">
@@ -36,8 +36,8 @@ const update_method_help = computed(() =>
     locale.value === 'zh-CN' ? update_method_help_zh_cn : update_method_help_en
 );
 const update_method_options = computed(() => [
-    { value: '随AI输出', label: t('panel.update.method.aiOutput') },
-    { value: '额外模型解析', label: t('panel.update.method.extraModel') },
+    { value: "主AI追従出力", label: t('panel.update.method.aiOutput') },
+    { value: "追加モデル解析", label: t('panel.update.method.extraModel') },
 ]);
 </script>
 

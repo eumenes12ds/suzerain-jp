@@ -1,7 +1,7 @@
 <template>
     <Section :label="t('panel.cleanup.section')">
         <template #content>
-            <Checkbox v-model="store.settings.自动清理变量.启用">
+            <Checkbox v-model="store.settings.自動クリーンアップ変数.有効">
                 <span>{{ t('panel.cleanup.enable') }}</span>
             </Checkbox>
 
@@ -9,7 +9,7 @@
                 <Field id="mvu_snapshot_keep_interval" :label="t('panel.cleanup.snapshotInterval')">
                     <input
                         id="mvu_snapshot_keep_interval"
-                        v-model.number="store.settings.自动清理变量.快照保留间隔"
+                        v-model.number="store.settings.自動クリーンアップ変数.スナップショット保持間隔"
                         type="number"
                         min="1"
                         step="1"
@@ -21,7 +21,7 @@
                 <Field id="mvu_keep_recent_floors" :label="t('panel.cleanup.recentFloors')">
                     <input
                         id="mvu_keep_recent_floors"
-                        v-model.number="store.settings.自动清理变量.要保留变量的最近楼层数"
+                        v-model.number="store.settings.自動クリーンアップ変数.保持する変数の最近階層スタック数"
                         type="number"
                         min="1"
                         step="1"
@@ -33,7 +33,7 @@
                 <Field id="mvu_restore_recent_floors" :label="t('panel.cleanup.restoreFloors')">
                     <input
                         id="mvu_restore_recent_floors"
-                        v-model.number="store.settings.自动清理变量.触发恢复变量的最近楼层数"
+                        v-model.number="store.settings.自動クリーンアップ変数.復元をトリガーする変数の最近階層スタック数"
                         type="number"
                         min="1"
                         step="1"

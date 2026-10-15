@@ -1,3 +1,4 @@
+import { MVU_JP_CONTRACT } from '@/settings_contract';
 import { loadInitVarData } from '@/function/initvar/variable_init';
 import { updateVariable, updateVariables } from '@/function/update_variables';
 import { isValueWithDescription, MvuData, variable_events } from '@/variable_def';
@@ -7,6 +8,10 @@ import { useDataStore } from '../../store';
 function createMvu() {
     const mvu = {
         events: variable_events,
+        settingsContract: MVU_JP_CONTRACT,
+        allowedUpdateModes: ['主AI追従出力','追加モデル解析'],
+        getSettings: () => _.cloneDeep(useDataStore().settings),
+        saveSettings: (value: unknown) => useDataStore().replaceSettings(value),
 
         /**
          * 获取变量表, 并将其视为包含 mvu 数据的 MvuData

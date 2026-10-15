@@ -127,7 +127,7 @@ export async function initCheck() {
         return;
     }
 
-    if (useDataStore().effective_settings.兼容性.更新到聊天变量) {
+    if (useDataStore().effective_settings.互換性.チャット変数に更新) {
         console.info(tr('runtime.initvar.chatVariablesInitializedLog'));
         await updateVariablesWith(data => _.assign(data, variables), { type: 'chat' });
     }
@@ -200,7 +200,7 @@ export async function initCheck() {
         await replaceVariables(variables, { type: 'message' });
     }
     try {
-        if (useDataStore().settings.通知.变量初始化成功) {
+        if (useDataStore().settings.通知.変数初期化成功) {
             // 输出构建信息
             const books = Object.entries(variables.initialized_lorebooks ?? {})
                 .map(
