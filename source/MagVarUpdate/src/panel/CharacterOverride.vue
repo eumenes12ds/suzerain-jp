@@ -13,8 +13,8 @@
             <Field class="mvu-character-override__select-field" :label="t('panel.update.section')">
                 <select v-model="update_method_model" class="text_pole">
                     <option :value="INHERIT">{{ t('panel.character.inherit') }}</option>
-                    <option value="随AI输出">{{ t('panel.update.method.aiOutput') }}</option>
-                    <option value="额外模型解析">
+                    <option value="主AI追従出力">{{ t('panel.update.method.aiOutput') }}</option>
+                    <option value="追加モデル解析">
                         {{ t('panel.update.method.extraModel') }}
                     </option>
                 </select>
@@ -149,12 +149,12 @@ const worldbook_label = computed(() => {
 const update_method_model = computed<string>({
     get: () => {
         const value = store.get_character_settings_override('更新方式');
-        return value === '随AI输出' || value === '额外模型解析' ? value : INHERIT;
+        return value === "主AI追従出力" || value === "追加モデル解析" ? value : INHERIT;
     },
     set: value => {
         setCharacterSettingsOverride(
             '更新方式',
-            value === '随AI输出' || value === '额外模型解析' ? value : undefined
+            value === "主AI追従出力" || value === "追加モデル解析" ? value : undefined
         );
     },
 });
@@ -181,11 +181,11 @@ function make_regex_model(path: CharacterSettingsOverridePath): WritableComputed
     });
 }
 
-const auto_request_model = make_boolean_model('额外模型解析配置.启用自动请求');
-const update_chat_variables_model = make_boolean_model('兼容性.更新到聊天变量');
-const sendas_not_user_model = make_boolean_model('兼容性.sendas不视为user消息');
-const whitelist_model = make_regex_model('额外模型解析配置.世界书条目白名单正则');
-const blacklist_model = make_regex_model('额外模型解析配置.世界书条目黑名单正则');
+const auto_request_model = make_boolean_model("追加モデル解析設定.自動リクエスト有効");
+const update_chat_variables_model = make_boolean_model("互換性.チャット変数に更新");
+const sendas_not_user_model = make_boolean_model("互換性.sendasをuserメッセージとみなさない");
+const whitelist_model = make_regex_model("追加モデル解析設定.ワールドブックエントリホワイトリスト正規表現");
+const blacklist_model = make_regex_model("追加モデル解析設定.ワールドブックエントリブラックリスト正規表現");
 
 const whitelist_regex_error = computed(
     () => compileEntryCommentRegex(whitelist_model.value).error ?? ''

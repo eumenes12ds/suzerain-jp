@@ -5,13 +5,13 @@ export type EntryCommentRegexCompileResult = {
     error?: string;
 };
 
-export type EntryCommentFilterSource = '用户全局配置' | '角色卡配置';
+export type EntryCommentFilterSource = "ユーザー共通設定" | "キャラクターカード設定";
 
 export type EntryCommentFilterResult = {
     lore: 'globalLore' | 'characterLore' | 'chatLore' | 'personaLore';
     world: string;
     comment: string;
-    reason: '白名单' | '黑名单';
+    reason: "許可リスト" | "拒否リスト";
     sources: EntryCommentFilterSource[];
 };
 

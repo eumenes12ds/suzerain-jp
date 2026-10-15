@@ -1,4 +1,4 @@
-import { decodeMvuSettings, encodeMvuSettings } from '@/settings_compat';
+import { decodeMvuSettings, encodeMvuSettings, readMvuSettings } from '@/settings_compat';
 import { migrateExtraModelApiProfiles } from '@/function/update/extra_model_api_profiles';
 import {
     CharacterSettingsOverride,
@@ -16,18 +16,18 @@ import * as z from 'zod';
 
 const ExtraModelApiProfile = z
     .object({
-        名称: z.string().min(1),
-        api地址: z.string().default(''),
-        密钥: z.string().default(''),
-        模型名称: z.string().default(''),
+        名前: z.string().min(1),
+        apiアドレス: z.string().default(''),
+        APIキー: z.string().default(''),
+        モデル名: z.string().default(''),
     })
     .loose();
 
 export const EXTRA_MODEL_RESPONSE_FORMATS = [
-    '聊天消息',
-    '工具调用',
-    '格式化输出',
-    '格式化输出(v4兼容)',
+    "チャットメッセージ",
+    "ツール呼び出し",
+    "フォーマット出力",
+    "フォーマット出力(v4互換)",
 ] as const;
 
 const ExtraModelResponseFormat = z.enum(EXTRA_MODEL_RESPONSE_FORMATS);
@@ -36,61 +36,61 @@ const OldSettings = z
     .object({
         通知: z
             .object({
-                变量更新出错: z.boolean(),
-                额外模型解析中: z.boolean(),
+                変数更新エラー: z.boolean(),
+                追加モデル解析中: z.boolean(),
             })
             .loose(),
-        更新方式: z.enum(['随AI输出', '额外模型解析']),
-        自动触发额外模型解析: z.boolean(),
-        额外模型解析配置: z
+        更新方式: z.enum(["主AI追従出力", "追加モデル解析"]),
+        追加モデル解析を自動トリガー: z.boolean(),
+        追加モデル解析設定: z
             .object({
-                发送预设: z.boolean(),
-                使用函数调用: z.boolean(),
-                模型来源: z.enum(['与插头相同', '自定义']),
-                api地址: z.string(),
-                密钥: z.string(),
-                模型名称: z.string(),
+                プリセット送信: z.boolean(),
+                関数呼び出しを使用: z.boolean(),
+                モデル出典: z.enum(["プラグと同じ", "カスタム", "その他"]),
+                apiアドレス: z.string(),
+                APIキー: z.string(),
+                モデル名: z.string(),
                 温度: z.coerce.number(),
-                频率惩罚: z.coerce.number(),
-                存在惩罚: z.coerce.number(),
+                頻度ペナルティ: z.coerce.number(),
+                存在ペナルティ: z.coerce.number(),
                 top_p: z.coerce.number(),
-                最大回复token数: z.coerce.number(),
+                最大応答トークン数: z.coerce.number(),
             })
             .loose(),
-        快照保留间隔: z.number(),
-        更新到聊天变量: z.boolean(),
+        スナップショット保持間隔: z.number(),
+        チャット変数に更新: z.boolean(),
         legacy: z
             .object({
-                显示老旧功能: z.boolean(),
+                旧機能を表示: z.boolean(),
             })
             .loose(),
         auto_cleanup: z
             .object({
-                启用: z.boolean(),
-                要保留变量的最近楼层数: z.number(),
-                触发恢复变量的最近楼层数: z.number(),
+                有効: z.boolean(),
+                保持する変数の最近階層スタック数: z.number(),
+                復元をトリガーする変数の最近階層スタック数: z.number(),
             })
             .loose(),
         internal: z
             .object({
-                已提醒更新了配置界面: z.boolean(),
-                已提醒自动清理旧变量功能: z.boolean(),
-                已提醒更新了API温度等配置: z.boolean(),
-                已默认开启自动清理旧变量功能: z.boolean(),
+                設定画面更新を通知済み: z.boolean(),
+                自動クリーンアップ旧変数機能を通知済み: z.boolean(),
+                API温度等の設定更新を通知済み: z.boolean(),
+                自動クリーンアップ旧変数機能を既定で有効化済み: z.boolean(),
             })
             .loose(),
     })
     .loose()
     .transform(data => {
         const {
-            自动触发额外模型解析,
-            额外模型解析配置: { 发送预设, 使用函数调用, ...extra_model_settings },
-            快照保留间隔,
-            更新到聊天变量,
+            追加モデル解析を自動トリガー,
+            追加モデル解析設定: { プリセット送信, 関数呼び出しを使用, ...extra_model_settings },
+            スナップショット保持間隔,
+            チャット変数に更新,
             legacy,
             auto_cleanup,
-            自动清理变量: existing_auto_cleanup,
-            兼容性: existing_compatibility,
+            自動クリーンアップ変数: existing_auto_cleanup,
+            互換性: existing_compatibility,
             ...settings
         } = data;
         const existing_auto_cleanup_settings = _.isPlainObject(existing_auto_cleanup)
@@ -102,20 +102,20 @@ const OldSettings = z
 
         return NewSettings.decode({
             ...settings,
-            额外模型解析配置: {
-                破限方案: 发送预设 ? '使用当前预设' : '使用内置破限',
-                启用自动请求: 自动触发额外模型解析,
-                应答格式: 使用函数调用 ? '工具调用' : '聊天消息',
+            追加モデル解析設定: {
+                脱獄方案: プリセット送信 ? "現在のプリセットを使用" : "内蔵脱獄を使用",
+                自動リクエスト有効: 追加モデル解析を自動トリガー,
+                応答フォーマット: 関数呼び出しを使用 ? "ツール呼び出し" : "チャットメッセージ",
                 ...extra_model_settings,
             },
-            自动清理变量: {
+            自動クリーンアップ変数: {
                 ...auto_cleanup,
-                快照保留间隔,
+                スナップショット保持間隔,
                 ...existing_auto_cleanup_settings,
             },
-            兼容性: {
+            互換性: {
                 ...legacy,
-                更新到聊天变量,
+                チャット変数に更新,
                 ...existing_compatibility_settings,
             },
         });
@@ -125,51 +125,51 @@ const NewSettings = z
     .object({
         通知: z
             .object({
-                MVU框架加载成功: z.boolean().default(true),
-                变量初始化成功: z.boolean().default(true),
-                变量更新出错: z.boolean().default(false),
-                额外模型解析中: z.boolean().default(true),
+                MVUフレームワーク読み込み成功: z.boolean().default(true),
+                変数初期化成功: z.boolean().default(true),
+                変数更新エラー: z.boolean().default(false),
+                追加モデル解析中: z.boolean().default(true),
             })
             .loose()
             .prefault({}),
-        更新方式: z.enum(['随AI输出', '额外模型解析']).default('随AI输出'),
-        额外模型解析配置: z
+        更新方式: z.enum(["主AI追従出力", "追加モデル解析"]).catch("主AI追従出力").default("主AI追従出力"),
+        追加モデル解析設定: z
             .object({
-                破限方案: z
-                    .enum(['使用内置破限', '使用当前预设', '使用其他预设'])
-                    .default('使用内置破限'),
-                其他预设名称: z.string().default(''),
-                使用函数调用: z.boolean().optional(),
-                应答格式: ExtraModelResponseFormat.optional(),
-                关闭thinking: z.boolean().default(false),
-                兼容假流式: z.boolean().default(false),
-                随机头部: z.boolean().default(true),
+                脱獄方案: z
+                    .enum(["内蔵脱獄を使用", "現在のプリセットを使用", "その他のプリセットを使用"])
+                    .default("内蔵脱獄を使用"),
+                その他プリセット名: z.string().default(''),
+                関数呼び出しを使用: z.boolean().optional(),
+                応答フォーマット: ExtraModelResponseFormat.optional(),
+                thinking無効: z.boolean().default(false),
+                疑似ストリーミング互換: z.boolean().default(false),
+                ランダムヘッダー: z.boolean().default(true),
 
-                启用自动请求: z.boolean().default(true),
-                请求方式: z
+                自動リクエスト有効: z.boolean().default(true),
+                リクエスト方式: z
                     .enum([
-                        '依次请求，失败后重试',
-                        '同时请求多次',
-                        '先请求一次, 失败后再同时请求多次',
+                        "順番にリクエストし、失敗したら再試行",
+                        "同時に複数回リクエスト",
+                        "最初に1回リクエストし、失敗したら同時に複数回リクエスト",
                     ])
-                    .default('依次请求，失败后重试'),
-                请求次数: z.number().default(3),
-                世界书条目白名单正则: z.string().default(''),
-                世界书条目黑名单正则: z.string().default(''),
+                    .default("順番にリクエストし、失敗したら再試行"),
+                リクエスト回数: z.number().default(3),
+                ワールドブックエントリホワイトリスト正規表現: z.string().default(''),
+                ワールドブックエントリブラックリスト正規表現: z.string().default(''),
 
-                模型来源: z.enum(['与插头相同', '自定义']).default('与插头相同'),
-                api地址: z.string().default('http://localhost:1234/v1'),
-                密钥: z.string().default(''),
-                模型名称: z.string().default('gemini-2.5-flash-nothinking'),
+                モデル出典: z.enum(["プラグと同じ", "カスタム", "その他"]).default("プラグと同じ"),
+                apiアドレス: z.string().default('http://localhost:1234/v1'),
+                APIキー: z.string().default(''),
+                モデル名: z.string().default('gemini-2.5-flash-nothinking'),
                 温度: z.coerce
                     .number()
                     .default(1)
                     .transform(value => _.clamp(value, 0, 2)),
-                频率惩罚: z.coerce
+                頻度ペナルティ: z.coerce
                     .number()
                     .default(0.0)
                     .transform(value => _.clamp(value, -2, 2)),
-                存在惩罚: z.coerce
+                存在ペナルティ: z.coerce
                     .number()
                     .default(0.0)
                     .transform(value => _.clamp(value, -2, 2)),
@@ -185,69 +185,69 @@ const NewSettings = z
                     .number()
                     .default(2)
                     .transform(value => _.clamp(Math.round(value), 2, 100)),
-                最大回复token数: z.coerce
+                最大応答トークン数: z.coerce
                     .number()
                     .default(4096)
                     .transform(value => Math.max(0, value)),
-                api方案列表: z.array(ExtraModelApiProfile).default([]),
-                当前api方案: z.string().default(''),
+                apiプロファイル一覧: z.array(ExtraModelApiProfile).default([]),
+                現在のapiプロファイル: z.string().default(''),
             })
             .loose()
-            .transform(({ 使用函数调用, 应答格式, ...data }) =>
+            .transform(({ 関数呼び出しを使用, 応答フォーマット, ...data }) =>
                 migrateExtraModelApiProfiles({
                     ...data,
-                    应答格式: 应答格式 ?? (使用函数调用 ? '工具调用' : '聊天消息'),
+                    応答フォーマット: 応答フォーマット ?? (関数呼び出しを使用 ? "ツール呼び出し" : "チャットメッセージ"),
                 })
             )
             .prefault({}),
-        自动清理变量: z
+        自動クリーンアップ変数: z
             .object({
-                启用: z.boolean().default(true),
-                快照保留间隔: z.number().default(50),
-                要保留变量的最近楼层数: z.number().default(20),
-                触发恢复变量的最近楼层数: z.number().default(10),
+                有効: z.boolean().default(true),
+                スナップショット保持間隔: z.number().default(50),
+                保持する変数の最近階層スタック数: z.number().default(20),
+                復元をトリガーする変数の最近階層スタック数: z.number().default(10),
             })
             .loose()
             .prefault({}),
-        兼容性: z
+        互換性: z
             .object({
-                更新到聊天变量: z.boolean().default(false),
-                显示老旧功能: z.boolean().default(false),
-                sendas不视为user消息: z.boolean().optional(),
-                sandas不视为user消息: z.boolean().optional(),
+                チャット変数に更新: z.boolean().default(false),
+                旧機能を表示: z.boolean().default(false),
+                sendasをuserメッセージとみなさない: z.boolean().optional(),
+                sandasをuserメッセージとみなさない: z.boolean().optional(),
             })
             .loose()
-            .transform(({ sendas不视为user消息, sandas不视为user消息, ...data }) => ({
+            .transform(({ sendasをuserメッセージとみなさない, sandasをuserメッセージとみなさない, ...data }) => ({
                 ...data,
-                更新到聊天变量: data.更新到聊天变量,
-                显示老旧功能: data.显示老旧功能,
-                sendas不视为user消息: sendas不视为user消息 ?? sandas不视为user消息 ?? false,
+                チャット変数に更新: data.チャット変数に更新,
+                旧機能を表示: data.旧機能を表示,
+                sendasをuserメッセージとみなさない: sendasをuserメッセージとみなさない ?? sandasをuserメッセージとみなさない ?? false,
             }))
             .prefault({}),
         internal: z
             .object({
-                已提醒更新了配置界面: z.boolean().default(false),
-                已提醒自动清理旧变量功能: z.boolean().default(false),
-                已提醒更新了API温度等配置: z.boolean().default(false),
-                已默认开启自动清理旧变量功能: z.boolean().default(false),
-                已提醒内置破限: z.boolean().default(false),
-                已提醒额外模型同时请求: z.boolean().default(false),
-                已开启默认不兼容假流式: z.boolean().default(false),
+                設定画面更新を通知済み: z.boolean().default(false),
+                自動クリーンアップ旧変数機能を通知済み: z.boolean().default(false),
+                API温度等の設定更新を通知済み: z.boolean().default(false),
+                自動クリーンアップ旧変数機能を既定で有効化済み: z.boolean().default(false),
+                内蔵脱獄を通知済み: z.boolean().default(false),
+                追加モデル同時リクエストを通知済み: z.boolean().default(false),
+                既定で疑似ストリーミング非互換を有効化済み: z.boolean().default(false),
             })
             .loose()
             .prefault({}),
     })
     .loose()
     .transform(data => {
-        if (data.internal.已开启默认不兼容假流式 === false) {
-            data.额外模型解析配置.兼容假流式 = false;
-            data.internal.已开启默认不兼容假流式 = true;
+        if (data.internal.既定で疑似ストリーミング非互換を有効化済み === false) {
+            data.追加モデル解析設定.疑似ストリーミング互換 = false;
+            data.internal.既定で疑似ストリーミング非互換を有効化済み = true;
         }
         return data;
     })
     .prefault({});
 
-const Settings = z.union([OldSettings, NewSettings]).catch(() => NewSettings.parse({}));
+const Settings = z.preprocess(decodeMvuSettings, z.union([OldSettings, NewSettings]).catch(() => NewSettings.parse({})));
 
 export type MvuSettings = z.infer<typeof NewSettings>;
 
@@ -284,37 +284,37 @@ const Runtimes = z
         unsupported_warnings: z.string().default(''),
         is_during_extra_analysis: z.boolean().default(false),
         is_function_call_enabled: z.boolean().default(false),
-        上次世界书条目过滤结果: z
+        前回の世界書エントリー選別結果: z
             .array(
                 z.object({
                     lore: z.enum(['globalLore', 'characterLore', 'chatLore', 'personaLore']),
                     world: z.string(),
                     comment: z.string(),
-                    reason: z.enum(['白名单', '黑名单']),
-                    sources: z.array(z.enum(['用户全局配置', '角色卡配置'])).default([]),
+                    reason: z.enum(["許可リスト", "拒否リスト"]),
+                    sources: z.array(z.enum(["ユーザー共通設定", "キャラクターカード設定"])).default([]),
                 })
             )
             .default([]),
         debug: z
             .object({
-                首次额外请求必失败: z.boolean().default(false),
+                最初の追加リクエストを必ず失敗させる: z.boolean().default(false),
             })
             .prefault({}),
     })
     .prefault({});
 
-export const useDataStore = defineStore('MVU变量框架', () => {
-    const settings = ref(Settings.parse(decodeMvuSettings(_.get(SillyTavern.extensionSettings, 'mvu_settings', {}))));
+export const useDataStore = defineStore('MVU変数フレームワーク', () => {
+    const settings = ref(Settings.parse(readMvuSettings()));
     watch(
         settings,
         new_settings => {
-            _.set(SillyTavern.extensionSettings, 'mvu_settings', encodeMvuSettings(toRaw(new_settings), _.get(SillyTavern.extensionSettings, 'mvu_settings', {})));
+            _.set(SillyTavern.extensionSettings, 'mvu_jp_settings', encodeMvuSettings(toRaw(new_settings)));
             if (!is_jest_environment) SillyTavern.saveSettingsDebounced();
         },
         { deep: true }
     );
     const _reload_settings = () => {
-        settings.value = Settings.parse(decodeMvuSettings(_.get(SillyTavern.extensionSettings, 'mvu_settings', {})));
+        settings.value = Settings.parse(readMvuSettings());
     };
 
     const character_settings = ref<CharacterSettingsState>(createCharacterSettingsState());
@@ -330,14 +330,14 @@ export const useDataStore = defineStore('MVU变量框架', () => {
         if (_.has(draft, '更新方式')) {
             result.更新方式 = draft.更新方式!;
         }
-        if (_.has(draft, '额外模型解析配置.启用自动请求')) {
-            result.额外模型解析配置.启用自动请求 = draft.额外模型解析配置!.启用自动请求!;
+        if (_.has(draft, "追加モデル解析設定.自動リクエスト有効")) {
+            result.追加モデル解析設定.自動リクエスト有効 = draft.追加モデル解析設定!.自動リクエスト有効!;
         }
-        if (_.has(draft, '兼容性.更新到聊天变量')) {
-            result.兼容性.更新到聊天变量 = draft.兼容性!.更新到聊天变量!;
+        if (_.has(draft, "互換性.チャット変数に更新")) {
+            result.互換性.チャット変数に更新 = draft.互換性!.チャット変数に更新!;
         }
-        if (_.has(draft, '兼容性.sendas不视为user消息')) {
-            result.兼容性.sendas不视为user消息 = draft.兼容性!.sendas不视为user消息!;
+        if (_.has(draft, "互換性.sendasをuserメッセージとみなさない")) {
+            result.互換性.sendasをuserメッセージとみなさない = draft.互換性!.sendasをuserメッセージとみなさない!;
         }
         return result;
     });
@@ -393,6 +393,7 @@ export const useDataStore = defineStore('MVU变量框架', () => {
 
     return {
         settings,
+        replaceSettings: (value: unknown) => { settings.value = Settings.parse(decodeMvuSettings(value)); },
         _reload_settings,
         character_settings,
         effective_settings,

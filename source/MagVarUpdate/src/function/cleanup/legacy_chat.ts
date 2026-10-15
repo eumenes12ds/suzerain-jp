@@ -5,8 +5,8 @@ import { useDataStore } from '@/store';
 export async function checkAndCleanupLegacyChat() {
     const store = useDataStore();
     if (
-        !store.settings.自动清理变量.启用 ||
-        SillyTavern.chat.length <= store.settings.自动清理变量.要保留变量的最近楼层数 + 5 ||
+        !store.settings.自動クリーンアップ変数.有効 ||
+        SillyTavern.chat.length <= store.settings.自動クリーンアップ変数.保持する変数の最近階層スタック数 + 5 ||
         !_.has(SillyTavern.chat, [1, 'variables', 0, 'stat_data']) ||
         _.has(SillyTavern.chat, [1, 'variables', 0, 'ignore_cleanup'])
     ) {
@@ -92,8 +92,8 @@ export async function checkAndCleanupLegacyChat() {
 
     const counter = cleanupMessageVariables(
         1, //0 层永不清理，以保证始终有快照能力。
-        SillyTavern.chat.length - 1 - store.settings.自动清理变量.要保留变量的最近楼层数,
-        store.settings.自动清理变量.快照保留间隔
+        SillyTavern.chat.length - 1 - store.settings.自動クリーンアップ変数.保持する変数の最近階層スタック数,
+        store.settings.自動クリーンアップ変数.スナップショット保持間隔
     );
     if (counter > 0) {
         toastr.info(

@@ -143,7 +143,7 @@ export const runtimeMessages = defineMessages({
         en: 'The current character card does not support extra-model parsing',
     },
     'runtime.button.extraModelRetryTitle': {
-        'zh-CN': '[MVU]重试额外模型解析',
+        'zh-CN': "[MVU]追加モデル解析を再試行",
         en: '[MVU] Retry extra-model parsing',
     },
     'runtime.button.extraModelParsingCompleted': {
@@ -342,7 +342,7 @@ export const runtimeMessages = defineMessages({
         en: 'New lorebook initialization variables were loaded. Active lorebooks:<br>{books}',
     },
     'runtime.initvar.initializationSucceededTitle': {
-        'zh-CN': '[MVU]变量初始化成功',
+        'zh-CN': "[MVU]変数初期化成功",
         en: '[MVU] Variable initialization succeeded',
     },
     'runtime.initvar.primaryLorebookReadFailedLog': {
@@ -385,7 +385,7 @@ export const runtimeMessages = defineMessages({
     },
     'runtime.notification.customApiOptionsBody': {
         'zh-CN':
-            'MVU 现在可以自定义 API 的温度、频率惩罚、存在惩罚和最大回复 token 数；需要酒馆助手版本 >= 4.0.14。',
+            "MVU 现在可以自定义 API 的温度、頻度ペナルティ、存在惩罚和最大回复 token 数；需要酒馆助手版本 >= 4.0.14。",
         en: 'MVU now supports custom API temperature, frequency penalty, presence penalty, and maximum response tokens. TavernHelper >= 4.0.14 is required.',
     },
     'runtime.notification.cleanupDefaultTitle': {
@@ -402,7 +402,7 @@ export const runtimeMessages = defineMessages({
     },
     'runtime.notification.builtinJailbreakBody': {
         'zh-CN':
-            '现在，额外模型解析如果取消“发送预设”，则会使用内置的破限提示词——既避免写作任务又避免道歉。',
+            "现在，额外模型解析如果取消“プリセット送信”，则会使用内置的破限提示词——既避免写作任务又避免道歉。",
         en: 'When Send Preset is disabled, extra-model parsing now uses a built-in jailbreak prompt designed to avoid both writing tasks and refusals.',
     },
     'runtime.notification.concurrentRequestsTitle': {
@@ -411,7 +411,7 @@ export const runtimeMessages = defineMessages({
     },
     'runtime.notification.concurrentRequestsBody': {
         'zh-CN':
-            '现在，你可以在“变量更新方式 → 请求策略 → 请求方式”中选择并发请求，提高额外模型解析成功率并节省时间。',
+            "现在，你可以在“变量更新方式 → 请求策略 → リクエスト方式”中选择并发请求，提高额外模型解析成功率并节省时间。",
         en: 'You can now choose concurrent requests under Variable Update Method → Request Strategy → Request Method to improve extra-model parsing success rates and save time.',
     },
     'runtime.notification.buildInfo': {
@@ -424,7 +424,7 @@ export const runtimeMessages = defineMessages({
     },
 
     'runtime.filter.toolCallingUnsupported': {
-        'zh-CN': '当前 TavernHelper 版本或预设/API 不支持工具调用，已退化回 `随AI输出`',
+        'zh-CN': "当前 TavernHelper 版本或预设/API 不支持工具调用，已退化回 `主AI追従出力`",
         en: 'The current TavernHelper version or preset/API does not support tool calling. Falling back to Follow AI Output.',
     },
     'runtime.filter.toolCallingUnsupportedTitle': {
@@ -432,11 +432,11 @@ export const runtimeMessages = defineMessages({
         en: '[MVU] Tool calling unavailable',
     },
     'runtime.filter.globalSettingsSource': {
-        'zh-CN': '用户全局配置',
+        'zh-CN': "ユーザー共通設定",
         en: 'global user settings',
     },
     'runtime.filter.characterSettingsSource': {
-        'zh-CN': '角色卡配置',
+        'zh-CN': "キャラクターカード設定",
         en: 'character-card settings',
     },
     'runtime.filter.whitelistRegexLabel': {
@@ -473,7 +473,7 @@ export const runtimeMessages = defineMessages({
         en: 'The character lorebook could not be found. Extra-model parsing is unavailable in group chats.',
     },
     'runtime.extraModel.v4RequiresCustomSource': {
-        'zh-CN': '[MVU额外模型解析]格式化输出(v4兼容)需要额外模型来源为自定义，不能与插头相同。',
+        'zh-CN': "[MVU额外模型解析]フォーマット出力(v4兼容)需要额外模型来源为自定义，不能与插头相同。",
         en: '[MVU extra-model parsing] Formatted Output (v4 Compatible) requires a Custom model source and cannot use Same as Primary Connection.',
     },
     'runtime.extraModel.customIncludeBodyInvalid': {

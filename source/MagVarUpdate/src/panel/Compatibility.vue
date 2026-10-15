@@ -1,24 +1,24 @@
 <template>
     <Section :label="t('panel.compatibility.section')">
         <template #content>
-            <Checkbox v-model="store.settings.兼容性.更新到聊天变量">
+            <Checkbox v-model="store.settings.互換性.チャット変数に更新">
                 <span>{{ t('panel.compatibility.updateChatVariables') }}</span>
                 <HelpIcon :help="t('panel.compatibility.updateChatVariablesHelp')" />
                 <OverrideBadge
-                    v-if="store.has_character_settings_override('兼容性.更新到聊天变量')"
+                    v-if="store.has_character_settings_override('互換性.チャット変数に更新')"
                     :value="update_chat_variables_override_label"
                 />
             </Checkbox>
 
-            <Checkbox v-model="store.settings.兼容性.显示老旧功能">
+            <Checkbox v-model="store.settings.互換性.旧機能を表示">
                 <span>{{ t('panel.compatibility.showLegacy') }}</span>
             </Checkbox>
 
-            <Checkbox v-model="store.settings.兼容性.sendas不视为user消息">
+            <Checkbox v-model="store.settings.互換性.sendasをuserメッセージとみなさない">
                 <span>{{ t('panel.compatibility.sendasNotUser') }}</span>
                 <HelpIcon :help="sandas_message_help" />
                 <OverrideBadge
-                    v-if="store.has_character_settings_override('兼容性.sendas不视为user消息')"
+                    v-if="store.has_character_settings_override('互換性.sendasをuserメッセージとみなさない')"
                     :value="sendas_not_user_override_label"
                 />
             </Checkbox>
@@ -48,9 +48,9 @@ function format_boolean(value: boolean): string {
 }
 
 const update_chat_variables_override_label = computed(() =>
-    format_boolean(store.effective_settings.兼容性.更新到聊天变量)
+    format_boolean(store.effective_settings.互換性.チャット変数に更新)
 );
 const sendas_not_user_override_label = computed(() =>
-    format_boolean(store.effective_settings.兼容性.sendas不视为user消息)
+    format_boolean(store.effective_settings.互換性.sendasをuserメッセージとみなさない)
 );
 </script>

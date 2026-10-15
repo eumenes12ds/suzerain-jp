@@ -12,8 +12,8 @@
 
             <template
                 v-if="
-                    store.settings.更新方式 === '额外模型解析' ||
-                    store.effective_settings.更新方式 === '额外模型解析'
+                    store.settings.更新方式 === '追加モデル解析' ||
+                    store.effective_settings.更新方式 === '追加モデル解析'
                 "
             >
                 <Prompt />
@@ -45,7 +45,7 @@ const update_method_help = computed(() =>
 );
 const update_method_override_label = computed(() =>
     t(
-        store.effective_settings.更新方式 === '随AI输出'
+        store.effective_settings.更新方式 === "主AI追従出力"
             ? 'panel.update.method.aiOutput'
             : 'panel.update.method.extraModel'
     )

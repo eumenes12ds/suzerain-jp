@@ -13,7 +13,7 @@ import { PLOT_REGEX, UPDATE_REGEX } from '@/variable_def';
 
 function getFilterSourceLabel(source: EntryCommentFilterSource): string {
     return tr(
-        source === '用户全局配置'
+        source === "ユーザー共通設定"
             ? 'runtime.filter.globalSettingsSource'
             : 'runtime.filter.characterSettingsSource'
     );
@@ -36,14 +36,14 @@ export async function filterEntries(lores: {
     const store = useDataStore();
     store.runtimes.unsupported_warnings = '';
     if (store.runtimes.is_during_extra_analysis) {
-        store.runtimes.上次世界书条目过滤结果 = [];
+        store.runtimes.前回の世界書エントリー選別結果 = [];
     }
 
     //在这个回调中，会将所有lore的条目传入，此处可以去除所有 [mvu_update] 相关的条目，避免在非更新的轮次中输出相关内容。
-    if (store.effective_settings.更新方式 === '随AI输出') {
+    if (store.effective_settings.更新方式 === "主AI追従出力") {
         return;
     }
-    if (store.settings.额外模型解析配置.应答格式 === '工具调用' && !isFunctionCallingSupported()) {
+    if (store.settings.追加モデル解析設定.応答フォーマット === "ツール呼び出し" && !isFunctionCallingSupported()) {
         toastr.warning(
             tr('runtime.filter.toolCallingUnsupported'),
             tr('runtime.filter.toolCallingUnsupportedTitle'),
@@ -128,32 +128,32 @@ export async function filterEntries(lores: {
     };
 
     const character_extra_model_settings = store.character_settings.is_valid
-        ? store.character_settings.draft.额外模型解析配置
+        ? store.character_settings.draft.追加モデル解析設定
         : undefined;
     // 白名单任一来源命中即可保留，角色卡规则不会抹掉用户的全局规则；
     // 黑名单则是任一来源命中即过滤。
     const white_regexes = [
         compile_filter_regex(
             '白名单正则',
-            '用户全局配置',
-            store.settings.额外模型解析配置.世界书条目白名单正则
+            "ユーザー共通設定",
+            store.settings.追加モデル解析設定.ワールドブックエントリホワイトリスト正規表現
         ),
         compile_filter_regex(
             '白名单正则',
-            '角色卡配置',
-            character_extra_model_settings?.世界书条目白名单正则 ?? ''
+            "キャラクターカード設定",
+            character_extra_model_settings?.ワールドブックエントリホワイトリスト正規表現 ?? ''
         ),
     ].filter(value => value !== undefined);
     const black_regexes = [
         compile_filter_regex(
             '黑名单正则',
-            '用户全局配置',
-            store.settings.额外模型解析配置.世界书条目黑名单正则
+            "ユーザー共通設定",
+            store.settings.追加モデル解析設定.ワールドブックエントリブラックリスト正規表現
         ),
         compile_filter_regex(
             '黑名单正则',
-            '角色卡配置',
-            character_extra_model_settings?.世界书条目黑名单正则 ?? ''
+            "キャラクターカード設定",
+            character_extra_model_settings?.ワールドブックエントリブラックリスト正規表現 ?? ''
         ),
     ].filter(value => value !== undefined);
 
@@ -175,7 +175,7 @@ export async function filterEntries(lores: {
             !white_regexes.some(({ regex }) => testEntryCommentRegex(regex, comment))
         ) {
             return {
-                reason: '白名单',
+                reason: "許可リスト",
                 sources: white_regexes.map(({ source }) => source),
             };
         }
@@ -184,7 +184,7 @@ export async function filterEntries(lores: {
             .map(({ source }) => source);
         if (matched_blacklist_sources.length > 0) {
             return {
-                reason: '黑名单',
+                reason: "拒否リスト",
                 sources: matched_blacklist_sources,
             };
         }
@@ -214,7 +214,7 @@ export async function filterEntries(lores: {
     apply_comment_regex_filter('chatLore', lores.chatLore);
     apply_comment_regex_filter('personaLore', lores.personaLore);
 
-    store.runtimes.上次世界书条目过滤结果 = filtered_entries;
+    store.runtimes.前回の世界書エントリー選別結果 = filtered_entries;
     if (filtered_entries.length > 0) {
         logEntryCommentFilterResult(filtered_entries);
     }

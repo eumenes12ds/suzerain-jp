@@ -16,7 +16,7 @@ export async function onMessageReceived(
 
     const store = useDataStore();
     if (
-        store.effective_settings.兼容性.sendas不视为user消息 === false &&
+        store.effective_settings.互換性.sendasをuserメッセージとみなさない === false &&
         current_chatmsg.name !== SillyTavern.name2
     ) {
         return;
@@ -30,8 +30,8 @@ export async function onMessageReceived(
     store.runtimes.is_during_extra_analysis = false;
 
     if (
-        store.effective_settings.更新方式 === '随AI输出' ||
-        (store.settings.额外模型解析配置.应答格式 === '工具调用' &&
+        store.effective_settings.更新方式 === "主AI追従出力" ||
+        (store.settings.追加モデル解析設定.応答フォーマット === "ツール呼び出し" &&
             !isFunctionCallingSupported()) ||
         !(await isExtraModelSupported())
     ) {
@@ -44,7 +44,7 @@ export async function onMessageReceived(
         return;
     }
 
-    if (!force && store.effective_settings.额外模型解析配置.启用自动请求 === false) {
+    if (!force && store.effective_settings.追加モデル解析設定.自動リクエスト有効 === false) {
         console.log(tr('runtime.extraModel.autoRequestDisabledLog'));
         return;
     }

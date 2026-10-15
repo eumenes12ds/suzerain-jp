@@ -2,7 +2,7 @@
     <div class="mvu-model-select">
         <div class="mvu-model-select__row">
             <input
-                v-model="store.settings.额外模型解析配置.模型名称"
+                v-model="store.settings.追加モデル解析設定.モデル名"
                 type="text"
                 class="text_pole"
                 autocomplete="off"
@@ -50,7 +50,7 @@ async function refresh() {
         return;
     }
 
-    const base_url = normalizeBaseURL(store.settings.额外模型解析配置.api地址);
+    const base_url = normalizeBaseURL(store.settings.追加モデル解析設定.apiアドレス);
     if (!base_url) {
         return;
     }
@@ -62,7 +62,7 @@ async function refresh() {
             headers: SillyTavern.getRequestHeaders(),
             body: JSON.stringify({
                 reverse_proxy: base_url,
-                proxy_password: store.settings.额外模型解析配置.密钥,
+                proxy_password: store.settings.追加モデル解析設定.APIキー,
                 chat_completion_source: 'openai',
             }),
             cache: 'no-cache',
@@ -76,8 +76,8 @@ async function refresh() {
             .sort()
             .sortedUniq()
             .value();
-        selected.value = models.value.includes(store.settings.额外模型解析配置.模型名称)
-            ? store.settings.额外模型解析配置.模型名称
+        selected.value = models.value.includes(store.settings.追加モデル解析設定.モデル名)
+            ? store.settings.追加モデル解析設定.モデル名
             : '';
 
         if (models.value.length === 0) {
@@ -99,13 +99,13 @@ watch(
     selected,
     value => {
         if (!value) return;
-        store.settings.额外模型解析配置.模型名称 = value;
+        store.settings.追加モデル解析設定.モデル名 = value;
     },
     { flush: 'sync' }
 );
 
 watch(
-    () => store.settings.额外模型解析配置.模型名称,
+    () => store.settings.追加モデル解析設定.モデル名,
     value => {
         if (!value) {
             selected.value = '';
@@ -117,7 +117,7 @@ watch(
 );
 
 watch(
-    () => [store.settings.额外模型解析配置.api地址, store.settings.额外模型解析配置.密钥] as const,
+    () => [store.settings.追加モデル解析設定.apiアドレス, store.settings.追加モデル解析設定.APIキー] as const,
     () => {
         models.value = [];
         selected.value = '';
